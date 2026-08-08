@@ -1,16 +1,52 @@
-# React + Vite
+# QuickBite — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React (Vite) client for the QuickBite food ordering application.
 
-Currently, two official plugins are available:
+## Stack
+- React 19 + React Router
+- Axios for API calls
+- Context API for global state (Auth, Cart, Toast)
+- Plain CSS with a custom design token system (no framework)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Setup
 
-## React Compiler
+```bash
+npm install
+cp .env.example .env
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Fill in `.env`:
+| Variable | Description |
+|---|---|
+| `VITE_API_BASE_URL` | Backend API URL, e.g. `http://localhost:3000/api` |
 
-## Expanding the Oxlint configuration
+## Scripts
+```bash
+npm run dev      # start dev server
+npm run build    # production build
+npm run preview  # preview the production build locally
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Project Structure
+frontend/
+├── src/
+│ ├── api/ # Axios instance + per-resource API functions
+│ ├── components/ # reusable UI components (Navbar, Footer)
+│ ├── context/ # Auth, Cart, Toast providers
+│ ├── hooks/ # useAuth, useCart, useToast
+│ ├── layouts/ # PublicLayout, AdminLayout
+│ ├── pages/
+│ │ ├── public/ # Home, Menu, Cart, Checkout, etc.
+│ │ ├── protected/ # Profile, Order History
+│ │ └── admin/ # Dashboard, Manage Foods/Categories/Orders
+│ ├── routes/ # route definitions, ProtectedRoute, AdminRoute
+│ ├── styles/ # design tokens, reset, shared stylesheets
+│ └── utils/ # formatCurrency, renderStars
+
+## Design System
+Colors, typography, and spacing are defined as CSS custom properties in `src/styles/variables.css`. The palette is inspired by Nigerian food culture (jollof-orange primary, plantain-green accent) rather than generic food-app defaults.
+
+## Notable Patterns
+- **`ProtectedRoute` / `AdminRoute`**: wrap route groups requiring login or admin role respectively; both check `AuthContext`'s `isLoading` state to avoid a false "logged out" flash on page refresh.
+- **Cart persistence**: `CartContext` syncs to `localStorage` on every change via a `useEffect`, and restores it lazily on mount.
+- **Response unwrapping**: the backend wraps every response in `{ success, message, data }` — API layer functions return the raw Axios response; consuming components access `response.data.data.<resource>`.
