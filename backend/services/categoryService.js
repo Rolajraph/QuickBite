@@ -25,7 +25,7 @@ export const createCategory = async (data) => {
 
 export const updateCategory = async (id, data) => {
   const category = await Category.findByIdAndUpdate(id, data, {
-    new: true,
+    returnDocument: 'after',
     runValidators: true,
   });
   if (!category) {

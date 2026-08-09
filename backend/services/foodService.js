@@ -46,7 +46,7 @@ export const updateFood = async (id, data) => {
   }
 
   const food = await Food.findByIdAndUpdate(id, data, {
-    new: true,
+    returnDocument: 'after',
     runValidators: true,
   }).populate('category', 'name image');
 
