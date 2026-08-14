@@ -8,6 +8,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: CLIENT_URL
+        value: https://quickbite-frontend-bt6m.onrender.com
       - key: MONGO_URI
         value: mongodb+srv://Dev_Rolaj:Rolaj_Ijinle93@cluster0.bvv6aat.mongodb.net/QuickBiteDB?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
