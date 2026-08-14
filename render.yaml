@@ -19,6 +19,14 @@ services:
       - key: CLOUDINARY_API_SECRET
         value: GPG36T2mpLtS9xe_MYx1s_h16hU
 
+  - type: static
+    name: quickbite-frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://quickbite-backend-bqzt.onrender.com/api
+
 databases:
   - name: quickbite-db
     databaseName: quickbitedb
