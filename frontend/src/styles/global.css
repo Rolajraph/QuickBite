@@ -5,6 +5,10 @@ body {
   background: var(--color-bg);
 }
 
+main {
+  padding-top: 80px;
+}
+
 h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 600;

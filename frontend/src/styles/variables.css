@@ -45,15 +45,15 @@
 
 [data-theme='dark'] {
   --color-bg: #1A1410;
-  --color-surface: #241C16;
-  --color-ink: #F5EDE4;
-  --color-primary: #E4703A;
-  --color-primary-dark: #C1440E;
-  --color-primary-tint: #3A2418;
-  --color-accent: #5FA36C;
-  --color-accent-tint: #1F2E20;
-  --color-muted: #A89A8C;
-  --color-border: #3A2E24;
-  --color-danger: #E4574A;
-  --color-danger-tint: #3A1F1C;
+  --color-surface: #2A231E;
+  --color-ink: #F5E6D3;
+  --color-primary: #E8956F;
+  --color-primary-dark: #D67F52;
+  --color-primary-tint: #3D2E27;
+  --color-accent: #88B89A;
+  --color-accent-tint: #1F2C26;
+  --color-muted: #D4C4B0;
+  --color-border: #413730;
+  --color-danger: #E08080;
+  --color-danger-tint: #3A2425;
 }

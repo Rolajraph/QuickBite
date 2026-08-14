@@ -4,13 +4,11 @@ import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
 import logo from "../../assets/logo/quickbite-logo.png";
 import "./Navbar.css";
-import useTheme from "../../hooks/useTheme";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { itemCount } = useCart();
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -153,15 +151,6 @@ const Navbar = () => {
             </Link>
           </>
         )}
-
-        <button
-          onClick={toggleTheme}
-          className="navbar__link"
-          aria-label="Toggle dark mode"
-          style={{ fontSize: "18px" }}
-        >
-          {theme === "light" ? "🌙" : "☀️"}
-        </button>
       </div>
     </nav>
   );
