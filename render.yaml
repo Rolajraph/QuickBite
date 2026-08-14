@@ -21,10 +21,8 @@ services:
       - key: CLOUDINARY_API_SECRET
         sync: false
 
-  - type: web
+  - type: static
     name: quickbite-frontend
-    env: node
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
