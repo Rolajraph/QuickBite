@@ -21,14 +21,6 @@ services:
       - key: CLOUDINARY_API_SECRET
         sync: false
 
-  - type: static
-    name: quickbite-frontend
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
-    envVars:
-      - key: VITE_API_URL
-        value: https://quickbite-backend.onrender.com/api
-
 databases:
   - name: quickbite-db
     databaseName: quickbitedb
