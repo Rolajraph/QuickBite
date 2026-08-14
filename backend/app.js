@@ -17,7 +17,7 @@ app.use(helmet());
 // CORS — restrict to the configured frontend origin only
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL || 'https://quickbite-frontend-bt6m.onrender.com',
     credentials: true,
   })
 );
