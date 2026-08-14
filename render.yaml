@@ -13,7 +13,7 @@ services:
       - key: MONGO_URI
         value: mongodb+srv://Dev_Rolaj:Rolaj_Ijinle93@cluster0.bvv6aat.mongodb.net/QuickBiteDB?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
-        sync: false
+        value: h+hiZtwP2bzBVyIcYlhCnjybaENAC8Qe+Nd3chrqOUM=
       - key: CLOUDINARY_NAME
         value: dtkyv2d3x
       - key: CLOUDINARY_API_KEY
