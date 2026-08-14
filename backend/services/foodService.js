@@ -3,7 +3,7 @@ import Category from '../models/Category.js';
 import ApiError from '../utils/ApiError.js';
 
 export const getAllFoods = async (query) => {
-  const { category, search, sort, minPrice, maxPrice } = query;
+  const { category, search, sort, minPrice, maxPrice, page = 1, limit = 8 } = query;
 
   const filter = {};
   if (category) filter.category = category;
@@ -14,11 +14,28 @@ export const getAllFoods = async (query) => {
     if (maxPrice) filter.price.$lte = Number(maxPrice);
   }
 
-  let sortOption = { createdAt: -1 }; // newest first, default
+  let sortOption = { createdAt: -1 };
   if (sort === 'price_asc') sortOption = { price: 1 };
   if (sort === 'price_desc') sortOption = { price: -1 };
 
-  return Food.find(filter).populate('category', 'name image').sort(sortOption);
+  const pageNum = Math.max(1, Number(page));
+  const limitNum = Math.max(1, Number(limit));
+  const skip = (pageNum - 1) * limitNum;
+
+  const [foods, total] = await Promise.all([
+    Food.find(filter).populate('category', 'name image').sort(sortOption).skip(skip).limit(limitNum),
+    Food.countDocuments(filter),
+  ]);
+
+  return {
+    foods,
+    pagination: {
+      total,
+      page: pageNum,
+      pages: Math.ceil(total / limitNum),
+      limit: limitNum,
+    },
+  };
 };
 
 export const getFoodById = async (id) => {

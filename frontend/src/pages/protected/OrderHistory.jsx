@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMyOrdersRequest } from '../../api/orderApi';
 import { formatCurrency } from '../../utils/formatCurrency';
+import useToast from '../../hooks/useToast';
 import '../../styles/admin.css';
 
 const statusColors = {
@@ -11,16 +12,33 @@ const statusColors = {
   cancelled: 'admin-badge--unavailable',
 };
 
+const SEEN_STATUSES_KEY = 'seenOrderStatuses';
+
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const { showToast } = useToast();
 
   useEffect(() => {
     const loadOrders = async () => {
       try {
         const response = await getMyOrdersRequest();
-        setOrders(response.data.data.orders);
+        const freshOrders = response.data.data.orders;
+        setOrders(freshOrders);
+
+        const seen = JSON.parse(localStorage.getItem(SEEN_STATUSES_KEY) || '{}');
+        const updatedSeen = { ...seen };
+
+        freshOrders.forEach((order) => {
+          const lastSeenStatus = seen[order._id];
+          if (lastSeenStatus && lastSeenStatus !== order.status) {
+            showToast(`Order updated: now "${order.status.replace('_', ' ')}"`);
+          }
+          updatedSeen[order._id] = order.status;
+        });
+
+        localStorage.setItem(SEEN_STATUSES_KEY, JSON.stringify(updatedSeen));
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load your orders.');
       } finally {

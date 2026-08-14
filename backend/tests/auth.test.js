@@ -76,6 +76,22 @@ describe('Auth', () => {
     assert.ok(res.body.data.token);
   });
 
+  test('logs in with a mixed-case email', async () => {
+    await request.post('/api/auth/register').send({
+      name: 'Test User',
+      email: 'mixedcase@example.com',
+      password: 'password123',
+    });
+
+    const res = await request.post('/api/auth/login').send({
+      email: 'MiXeDCase@Example.com',
+      password: 'password123',
+    });
+
+    assert.strictEqual(res.status, 200);
+    assert.ok(res.body.data.token);
+  });
+
   test('rejects login with wrong password', async () => {
     await request.post('/api/auth/register').send({
       name: 'Test User',

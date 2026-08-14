@@ -23,16 +23,19 @@ const ManageFoods = () => {
   const [editingId, setEditingId] = useState(null);
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState(null);
 
   const loadData = async () => {
     setIsLoading(true);
     setError('');
     try {
       const [foodsRes, categoriesRes] = await Promise.all([
-        getFoodsRequest(),
+        getFoodsRequest({ page, limit: 10 }),
         getCategoriesRequest(),
       ]);
       setFoods(foodsRes.data.data.foods);
+      setPagination(foodsRes.data.pagination);
       setCategories(categoriesRes.data.data.categories);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load data.');
@@ -43,7 +46,7 @@ const ManageFoods = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [page]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -169,7 +172,7 @@ const ManageFoods = () => {
         )}
       </form>
 
-      <h2>Existing Foods ({foods.length})</h2>
+      <h2>Existing Foods ({pagination?.total ?? foods.length})</h2>
       <div className="admin-table-wrap">
         <table className="admin-table">
           <thead>
@@ -198,6 +201,20 @@ const ManageFoods = () => {
           </tbody>
         </table>
       </div>
+
+      {pagination && pagination.pages > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--space-3)', marginTop: 'var(--space-6)' }}>
+          <button onClick={() => setPage((p) => p - 1)} disabled={page <= 1} className="admin-btn">
+            Previous
+          </button>
+          <span style={{ alignSelf: 'center', fontSize: 'var(--text-sm)', color: 'var(--color-muted)' }}>
+            Page {page} of {pagination.pages}
+          </span>
+          <button onClick={() => setPage((p) => p + 1)} disabled={page >= pagination.pages} className="admin-btn">
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,17 +6,23 @@ import { CartProvider } from "./context/CartContext";
 import AppRoutes from "./routes/AppRoutes";
 import "./index.css";
 import { ToastProvider } from "./context/ToastContext";
+import { ThemeProvider } from './context/ThemeContext';
 
-createRoot(document.getElementById("root")).render(
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+root.render(
   <StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <ToastProvider>
-          <CartProvider>
-            <AppRoutes />
-          </CartProvider>
-        </ToastProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>,
+    <ThemeProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <ToastProvider>
+            <CartProvider>
+              <AppRoutes />
+            </CartProvider>
+          </ToastProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </ThemeProvider>
+  </StrictMode>
 );

@@ -42,3 +42,18 @@
   --shadow-sm: 0 1px 2px rgba(36, 23, 15, 0.06);
   --shadow-md: 0 4px 16px rgba(36, 23, 15, 0.08);
 }
+
+[data-theme='dark'] {
+  --color-bg: #1A1410;
+  --color-surface: #241C16;
+  --color-ink: #F5EDE4;
+  --color-primary: #E4703A;
+  --color-primary-dark: #C1440E;
+  --color-primary-tint: #3A2418;
+  --color-accent: #5FA36C;
+  --color-accent-tint: #1F2E20;
+  --color-muted: #A89A8C;
+  --color-border: #3A2E24;
+  --color-danger: #E4574A;
+  --color-danger-tint: #3A1F1C;
+}

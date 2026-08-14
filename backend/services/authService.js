@@ -3,12 +3,14 @@ import generateToken from '../utils/generateToken.js';
 import ApiError from '../utils/ApiError.js';
 
 export const registerUser = async ({ name, email, password, phone }) => {
-  const existingUser = await User.findOne({ email });
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const existingUser = await User.findOne({ email: normalizedEmail });
   if (existingUser) {
     throw new ApiError(409, 'An account with this email already exists');
   }
 
-  const user = await User.create({ name, email, password, phone });
+  const user = await User.create({ name, email: normalizedEmail, password, phone });
 
   const token = generateToken(user._id);
 
@@ -24,7 +26,8 @@ export const registerUser = async ({ name, email, password, phone }) => {
 };
 
 export const loginUser = async ({ email, password }) => {
-  const user = await User.findOne({ email }).select('+password');
+  const normalizedEmail = email.trim().toLowerCase();
+  const user = await User.findOne({ email: normalizedEmail }).select('+password');
 
   if (!user) {
     throw new ApiError(401, 'Invalid email or password');

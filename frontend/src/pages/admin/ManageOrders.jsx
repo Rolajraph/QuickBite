@@ -64,11 +64,17 @@ const ManageOrders = () => {
         <tbody>
           {orders.map((order) => {
             const nextOptions = ALLOWED_TRANSITIONS[order.status] || [];
+            const customer = order.customer || { name: 'Unknown customer', email: 'No email' };
+            const items = Array.isArray(order.items) ? order.items : [];
+
             return (
               <tr key={order._id}>
-                <td>{order.customer.name}<br /><small style={{ color: 'var(--color-muted)' }}>{order.customer.email}</small></td>
-                <td>{order.items.map((item) => <div key={item.food}>{item.name} × {item.quantity}</div>)}</td>
-                <td>{formatCurrency(order.totalAmount)}</td>
+                <td>
+                  {customer.name}<br />
+                  <small style={{ color: 'var(--color-muted)' }}>{customer.email}</small>
+                </td>
+                <td>{items.map((item) => <div key={item.food || item.name}>{item.name} × {item.quantity}</div>)}</td>
+                <td>{formatCurrency(order.totalAmount || 0)}</td>
                 <td><span className="admin-badge admin-badge--available">{order.status}</span></td>
                 <td>
                   {nextOptions.length === 0 ? '—' : (

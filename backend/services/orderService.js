@@ -62,8 +62,12 @@ export const getOrderById = async (orderId, requestingUser) => {
     throw new ApiError(404, 'Order not found');
   }
 
+  if (!order.customer && requestingUser.role !== 'admin') {
+    throw new ApiError(403, 'Not authorized to view this order');
+  }
+
   // Customers can only view their own orders; admins can view any
-  const isOwner = order.customer._id.toString() === requestingUser.id;
+  const isOwner = order.customer && order.customer._id.toString() === requestingUser.id;
   if (!isOwner && requestingUser.role !== 'admin') {
     throw new ApiError(403, 'Not authorized to view this order');
   }

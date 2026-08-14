@@ -1,8 +1,8 @@
 import * as foodService from '../services/foodService.js';
 
 export const getFoods = async (req, res) => {
-  const foods = await foodService.getAllFoods(req.query);
-  res.status(200).json({ success: true, results: foods.length, data: { foods } });
+  const { foods, pagination } = await foodService.getAllFoods(req.query);
+  res.status(200).json({ success: true, results: foods.length, pagination, data: { foods } });
 };
 
 export const getFood = async (req, res) => {
