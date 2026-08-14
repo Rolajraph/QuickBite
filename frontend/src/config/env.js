@@ -1,11 +1,5 @@
 const env = {
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'https://quickbite-backend-bqzt.onrender.com/api',
 };
-
-if (!env.apiBaseUrl) {
-  throw new Error(
-    'VITE_API_BASE_URL is not defined. Check your .env file.'
-  );
-}
 
 export default env;
