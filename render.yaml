@@ -22,7 +22,7 @@ services:
   - type: static
     name: quickbite-frontend
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: ./frontend/dist
+    publishPath: ./frontend/dist
     envVars:
       - key: VITE_API_BASE_URL
         value: https://quickbite-backend-bqzt.onrender.com/api
