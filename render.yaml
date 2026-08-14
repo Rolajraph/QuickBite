@@ -9,17 +9,15 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
-        fromDatabase:
-          name: quickbite-db
-          property: connectionString
+        value: mongodb+srv://Dev_Rolaj:Rolaj_Ijinle93@cluster0.bvv6aat.mongodb.net/QuickBiteDB?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
         sync: false
       - key: CLOUDINARY_NAME
-        sync: false
+        value: dtkyv2d3x
       - key: CLOUDINARY_API_KEY
-        sync: false
+        value: 294698414177843
       - key: CLOUDINARY_API_SECRET
-        sync: false
+        value: GPG36T2mpLtS9xe_MYx1s_h16hU
 
 databases:
   - name: quickbite-db
