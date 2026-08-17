@@ -54,7 +54,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-primary-tint);
+  background: 
   color: var(--color-primary);
   border-radius: 50%;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -90,3 +90,4 @@
   align-items: center;
   gap: var(--space-1);
 }
+

@@ -5,6 +5,7 @@ import useCart from "../../hooks/useCart";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { renderStars } from "../../utils/renderStars";
 import "./Menu.css";
+import useToast from "../../hooks/useToast";
 
 const Menu = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,6 +19,7 @@ const Menu = () => {
   const search = searchParams.get("search") || "";
   const sort = searchParams.get("sort") || "";
   const page = Number(searchParams.get("page")) || 1;
+  const { showToast } = useToast();
 
   useEffect(() => {
     const fetchFoods = async () => {
@@ -166,7 +168,10 @@ const Menu = () => {
                   </p>
                 )}
                 <button
-                  onClick={() => addItem(food)}
+                  onClick={() => {
+                    addItem(food);
+                    showToast(`${food.name} added to cart`);
+                  }}
                   disabled={!food.isAvailable}
                   className="food-card__btn"
                 >
