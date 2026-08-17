@@ -53,8 +53,7 @@
   height: 32px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: 
+  justify-content: center; 
   color: var(--color-primary);
   border-radius: 50%;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
