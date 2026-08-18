@@ -4,9 +4,8 @@ import ApiError from '../utils/ApiError.js';
 import { ALLOWED_TRANSITIONS } from '../constants/orderStatus.js';
 
 export const createOrder = async (customerId, orderData) => {
-  const { items, deliveryAddress, phone, paymentMethod } = orderData;
+  const { items, deliveryAddress, phone, paymentMethod, paystackReference } = orderData;
 
-  // Fetch all referenced foods in one query, not one-by-one in a loop
   const foodIds = items.map((item) => item.food);
   const foods = await Food.find({ _id: { $in: foodIds } });
 
@@ -35,17 +34,26 @@ export const createOrder = async (customerId, orderData) => {
     };
   });
 
-  const order = await Order.create({
+  const orderPayload = {
     customer: customerId,
     items: snapshottedItems,
     deliveryAddress,
     phone,
     paymentMethod,
     totalAmount,
-  });
+  };
+
+  // Card payments are only created after Paystack verification confirms success
+  if (paymentMethod === 'card') {
+    orderPayload.paymentStatus = 'paid';
+    orderPayload.paystackReference = paystackReference;
+  }
+
+  const order = await Order.create(orderPayload);
 
   return order;
 };
+
 
 export const getMyOrders = async (customerId) => {
   return Order.find({ customer: customerId }).sort({ createdAt: -1 });

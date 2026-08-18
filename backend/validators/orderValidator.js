@@ -15,8 +15,10 @@ export const createOrderSchema = z.object({
   deliveryAddress: z.string().trim().min(5, 'Delivery address is too short'),
   phone: z.string().trim().min(7, 'Please provide a valid phone number'),
   paymentMethod: z.enum(Object.values(PAYMENT_METHODS)),
+  paystackReference: z.string().optional(),
 });
 
 export const updateOrderStatusSchema = z.object({
   status: z.enum(Object.values(ORDER_STATUS)),
 });
+

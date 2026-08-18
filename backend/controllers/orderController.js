@@ -1,6 +1,23 @@
 import * as orderService from '../services/orderService.js';
+import * as paystackService from '../services/paystackService.js';
+import ApiError from '../utils/ApiError.js';
+
 
 export const createOrder = async (req, res) => {
+  const { paymentMethod, paystackReference } = req.body;
+
+  if (paymentMethod === 'card') {
+    if (!paystackReference) {
+      throw new ApiError(400, 'Payment reference is required for card payments');
+    }
+
+    const transaction = await paystackService.verifyTransaction(paystackReference);
+
+    if (transaction.status !== 'success') {
+      throw new ApiError(400, 'Payment verification failed. Order was not created.');
+    }
+  }
+
   const order = await orderService.createOrder(req.user.id, req.body);
   res.status(201).json({
     success: true,
