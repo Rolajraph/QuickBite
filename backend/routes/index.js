@@ -3,6 +3,7 @@ import authRoutes from './authRoutes.js';
 import categoryRoutes from './categoryRoutes.js';
 import foodRoutes from './foodRoutes.js';
 import orderRoutes from './orderRoutes.js';
+import paymentRoutes from './paymentRoutes.js';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/auth', authRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/foods', foodRoutes);
 router.use('/orders', orderRoutes);
+router.use('/payments', paymentRoutes);
 
 export default router;
