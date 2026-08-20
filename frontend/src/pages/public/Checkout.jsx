@@ -2,12 +2,17 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import { createOrderRequest } from '../../api/orderApi';
+import { initializePaymentRequest } from '../../api/orderApi';
 import { formatCurrency } from '../../utils/formatCurrency';
+import useAuth from '../../hooks/useAuth';
 import '../../styles/forms.css';
 import './Checkout.css';
 
+const PENDING_ORDER_KEY = 'pendingOrder';
+
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -35,6 +40,20 @@ const Checkout = () => {
     };
 
     try {
+      if (formData.paymentMethod === 'card') {
+        // Save the order details so /checkout/verify can complete it after payment
+        localStorage.setItem(PENDING_ORDER_KEY, JSON.stringify(orderPayload));
+
+        const response = await initializePaymentRequest({
+          amount: subtotal,
+          email: user.email,
+        });
+
+        window.location.href = response.data.data.authorizationUrl;
+        return; // browser is navigating away, nothing more to do here
+      }
+
+      // Cash on Delivery / Bank Transfer — create the order immediately
       const response = await createOrderRequest(orderPayload);
       const order = response.data.data.order;
       clearCart();
@@ -100,13 +119,13 @@ const Checkout = () => {
             onChange={handleChange}
           >
             <option value="cash_on_delivery">Cash on Delivery</option>
-            <option value="card">Card (Simulated)</option>
+            <option value="card">Card (Paystack)</option>
             <option value="bank_transfer">Bank Transfer</option>
           </select>
         </div>
         {error && <p className="form-error">{error}</p>}
         <button type="submit" disabled={isSubmitting} className="form-submit-btn">
-          {isSubmitting ? 'Placing order...' : 'Place Order'}
+          {isSubmitting ? 'Processing...' : formData.paymentMethod === 'card' ? 'Pay with Card' : 'Place Order'}
         </button>
       </form>
     </div>

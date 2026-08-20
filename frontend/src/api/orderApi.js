@@ -19,3 +19,11 @@ export const getAllOrdersRequest = () => {
 export const updateOrderStatusRequest = (id, status) => {
   return axiosInstance.patch(`/orders/${id}/status`, { status });
 };
+
+export const initializePaymentRequest = (data) => {
+  return axiosInstance.post('/payments/initialize', data);
+};
+
+export const verifyPaymentRequest = (reference) => {
+  return axiosInstance.get(`/payments/verify/${reference}`);
+};
