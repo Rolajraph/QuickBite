@@ -31,9 +31,11 @@ const Home = () => {
           getCategoriesRequest(),
         ]);
         // Feature the top-rated items
-        const sorted = [...foodsRes.data.data.foods].sort(
-          (a, b) => b.rating - a.rating,
+        // Feature local dishes, highest-rated first
+        const localDishes = foodsRes.data.data.foods.filter(
+          (food) => food.category.name === "Local Dishes",
         );
+        const sorted = [...localDishes].sort((a, b) => b.rating - a.rating);
         setFeaturedFoods(sorted.slice(0, 4));
         setCategories(categoriesRes.data.data.categories);
       } catch {
